@@ -11,7 +11,8 @@ var SPMaskBehavior = function (val) {
   
   
   django.jQuery(function(){
-  
+      
+      django.jQuery('.mask-cpf').mask('000.000.000-00', {reverse: true});
       django.jQuery('.mask-cnpj').mask('00.000.000/0000-00', {reverse: true});
       django.jQuery('.vDateField').mask('00/00/0000');
       django.jQuery('.mask-telefone').mask(SPMaskBehavior, spOptions);
