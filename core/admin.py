@@ -58,7 +58,7 @@ class ContratosAdmin(admin.ModelAdmin):
             'fields': ('advogados',)
         }),
         ('Dados contratuais', {
-            'fields': ('tipo','valor','honorario', 'multa', 'mora', 'foro_execucao',)
+            'fields': ('tipo','valor','honorario', 'multa', 'mora', 'foro_execucao','tipo_pagamento','parcelas','valor_entrada')
         }),
         ('Escritório', {
             'fields': ('taxa',)

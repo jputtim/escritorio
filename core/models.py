@@ -72,21 +72,28 @@ class Clientes(models.Model):
 
 class Contratos(models.Model):
     CHOICES_TIPO = (
-        ('Normal', 'Normal'),
-        ('Risco', 'Risco'),
+        ('N', 'Normal'),
+        ('R', 'Risco'),
     )
-    tipo = models.CharField('Tipo de contrato', max_length=6, choices=CHOICES_TIPO)
+    CHOICES_TIPO_PGTO = (
+        ('V', 'À vista'),
+        ('P', 'Parcelado'),
+    )
+    tipo = models.CharField('Tipo de contrato', max_length=1, choices=CHOICES_TIPO)
+    tipo_pagamento = models.CharField('Tipo de pagamento', max_length=1, choices=CHOICES_TIPO_PGTO)
+    valor_entrada = models.CharField('Entrada', max_length=25, blank= True)
+    parcelas = models.IntegerField(null= True)
     acao = models.CharField('Ação', max_length=255)
-    foro_acao = models.CharField(max_length=255, default="Teixeira de Freitas - BA")
-    foro_execucao = models.CharField(max_length=255, default="Teixeira de Freitas - BA")
-    valor = models.CharField(max_length=25, default=0)
-    taxa = models.CharField('Taxa Escritório',max_length=25, default=0)
-    honorario = models.DecimalField(max_digits=8, decimal_places=2, default=30)
-    multa = models.DecimalField(max_digits=8, decimal_places=2, default=20)
-    mora = models.DecimalField(max_digits=8, decimal_places=2, default=1)
+    foro_acao = models.CharField('Foro da Ação', max_length=255, default="Teixeira de Freitas - BA")
+    foro_execucao = models.CharField('Foro da Execução',max_length=255, default="Teixeira de Freitas - BA")
+    valor = models.CharField(max_length=25, blank= True)
+    taxa = models.CharField('Taxa Escritório',max_length=25, blank= True)
+    honorario = models.DecimalField(max_digits=8, decimal_places=2, default=30, blank= True)
+    multa = models.DecimalField(max_digits=8, decimal_places=2, default=20, blank= True)
+    mora = models.DecimalField(max_digits=8, decimal_places=2, default=1, blank= True)
     processo = models.CharField(max_length=30, blank=True)
-    clientes = models.ManyToManyField(Clientes)
-    advogados = models.ManyToManyField(Advogados, default=1)
+    clientes = models.ManyToManyField(Clientes, blank=True)
+    advogados = models.ManyToManyField(Advogados, blank=True)
     criado_em = models.DateTimeField(auto_now_add=True)
     atualizado_em = models.DateTimeField(auto_now=True)
     criado_por = models.ForeignKey(User, on_delete=models.SET_NULL, null= True)

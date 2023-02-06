@@ -17,4 +17,6 @@ class ContratosFormAdmin(forms.ModelForm):
 
 		super(ContratosFormAdmin, self).__init__(*args, **kwargs)
 		self.fields['valor'].widget.attrs['class'] = 'mask-money'
+		self.fields['taxa'].widget.attrs['class'] = 'mask-money'
+		self.fields['valor_entrada'].widget.attrs['class'] = 'mask-money'
 		
