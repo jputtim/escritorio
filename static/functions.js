@@ -12,13 +12,13 @@ var SPMaskBehavior = function (val) {
   
   django.jQuery(function(){
   
-      django.jQuery('.mask-cpf').mask('000.000.000-00', {reverse: true});
+      django.jQuery('.mask-cnpj').mask('00.000.000/0000-00', {reverse: true});
       django.jQuery('.vDateField').mask('00/00/0000');
       django.jQuery('.mask-telefone').mask(SPMaskBehavior, spOptions);
       django.jQuery('.mask-cep').mask('00000-000');
   
-      django.jQuery('#pessoas_form').submit(function(){
-          django.jQuery('#pessoas_form').find(":input[class*='mask-']").unmask();
+      django.jQuery('#sede_form').submit(function(){
+          django.jQuery('#sede_form').find(":input[class*='mask-']").unmask();
       });
 
       // $(document).ready(function() {

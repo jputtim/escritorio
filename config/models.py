@@ -1,12 +1,14 @@
 from django.db import models
 from django.utils.html import format_html
 from django.contrib.auth.models import User
+from cnpj_field.models import CNPJField
 
 # Create your models here.
 class Sede(models.Model):
     razao_social = models.CharField(max_length=255)
     nome_fantasia = models.CharField(max_length=255)
-    cnpj = models.CharField('CNPJ',max_length=15)
+    # cnpj = models.CharField('CNPJ',max_length=15)
+    cnpj = CNPJField('CNPJ', unique=True)
     telefone = models.CharField(max_length=20)
     email = models.EmailField(max_length=255, blank=True)
     cep = models.CharField('CEP', max_length=10, blank=True)
