@@ -10,3 +10,11 @@ class ClientesFormAdmin(forms.ModelForm):
 		self.fields['telefone'].widget.attrs['class'] = 'mask-telefone'
 		self.fields['cep'].widget.attrs['class'] = 'mask-cep'
 		self.fields['telefone_contato'].widget.attrs['class'] = 'mask-telefone'
+
+class ContratosFormAdmin(forms.ModelForm):
+	"""docstring for ContratosFormAdmin"""
+	def __init__(self, *args, **kwargs):
+
+		super(ContratosFormAdmin, self).__init__(*args, **kwargs)
+		self.fields['valor'].widget.attrs['class'] = 'mask-money'
+		

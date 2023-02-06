@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from config.models import *
 
 from cpf_field.models import CPFField
 from django.utils.html import format_html
@@ -60,17 +61,7 @@ class Clientes(models.Model):
 
     def contato(self):
         num = self.telefone
-        return format_html("("+num[:2]+") "+num[2:7]+"-"+num[7:])
-    
-    def documentos(self):
-        id_pessoa = self.id
-        return format_html("<a target='_blank' href='http://127.0.0.1:8000/admin/pessoas/arquivos/?pessoa__id__exact=%s'>Documentos</a>" % (id_pessoa))
-    
-    def dh(self):
-        id_pessoa = self.id
-        return format_html("<a target='_blank' href='http://127.0.0.1:8000/pdf/create-pdf/%s'>Gerar</a>" % (id_pessoa))
-
-        
+        return format_html("("+num[:2]+") "+num[2:7]+"-"+num[7:])        
     
     def __str__(self):
         return u'%s - %s' % (self.cpf, self.nome_completo)
@@ -78,3 +69,31 @@ class Clientes(models.Model):
     class Meta:
         verbose_name = 'Cliente'
         verbose_name_plural = 'Clientes'
+
+class Contratos(models.Model):
+    CHOICES_TIPO = (
+        ('Normal', 'Normal'),
+        ('Risco', 'Risco'),
+    )
+    tipo = models.CharField('Tipo de contrato', max_length=6, choices=CHOICES_TIPO)
+    acao = models.CharField('Ação', max_length=255)
+    foro_acao = models.CharField(max_length=255, default="Teixeira de Freitas - BA")
+    foro_execucao = models.CharField(max_length=255, default="Teixeira de Freitas - BA")
+    valor = models.CharField(max_length=25, default=0)
+    taxa = models.CharField('Taxa Escritório',max_length=25, default=0)
+    honorario = models.DecimalField(max_digits=8, decimal_places=2, default=30)
+    multa = models.DecimalField(max_digits=8, decimal_places=2, default=20)
+    mora = models.DecimalField(max_digits=8, decimal_places=2, default=1)
+    processo = models.CharField(max_length=30, blank=True)
+    clientes = models.ManyToManyField(Clientes)
+    advogados = models.ManyToManyField(Advogados, default=1)
+    criado_em = models.DateTimeField(auto_now_add=True)
+    atualizado_em = models.DateTimeField(auto_now=True)
+    criado_por = models.ForeignKey(User, on_delete=models.SET_NULL, null= True)
+
+    def __str__(self):
+        return u'%s - %s' % (self.acao, self.clientes)
+
+    class Meta:
+        verbose_name = 'Contrato'
+        verbose_name_plural = 'Contratos'

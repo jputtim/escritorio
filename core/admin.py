@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from core.forms import ClientesFormAdmin
+from core.forms import ClientesFormAdmin, ContratosFormAdmin
 
-from .models import Clientes
+from .models import Clientes, Contratos
 
 # Register your models here.
 class ClientesAdmin(admin.ModelAdmin):
@@ -40,3 +40,44 @@ class ClientesAdmin(admin.ModelAdmin):
             super().save_model(request, obj, form, change)
 
 admin.site.register(Clientes, ClientesAdmin)
+
+class ContratosAdmin(admin.ModelAdmin):
+    form = ContratosFormAdmin
+
+    filter_horizontal = ('clientes','advogados',) 
+
+    list_display = ['acao', 'foro_acao']
+    fieldsets = (
+         ('Ação', {
+            'fields': ('acao', 'foro_acao',)
+        }),
+        ('Clientes', {
+            'fields': ('clientes',)
+        }),       
+        ('Advogados', {
+            'fields': ('advogados',)
+        }),
+        ('Dados contratuais', {
+            'fields': ('tipo','valor','honorario', 'multa', 'mora', 'foro_execucao',)
+        }),
+        ('Escritório', {
+            'fields': ('taxa',)
+        }),
+        
+
+    )
+
+    class Media:
+        js=("jquery.mask.min.js","functions.js",)
+
+    readonly_fields = ("criado_por", "criado_em", "atualizado_em")
+
+    # SALVAR USUÁRIO
+    def save_model(self, request, obj, form, change):
+        if obj.id == None:
+            obj.criado_por = request.user
+            super().save_model(request, obj, form, change)
+        else:
+            super().save_model(request, obj, form, change)
+
+admin.site.register(Contratos, ContratosAdmin)
